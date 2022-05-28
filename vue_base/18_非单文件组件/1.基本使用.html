@@ -31,7 +31,8 @@
             <school></school>
        -->
     <div id="root">
-        <school></school>
+      <!-- 组件使用式首字母可大写可小写，以注册的名称作为标签名 -->
+      <school1></school1>
       <hr />
       <student></student>
 
@@ -97,7 +98,7 @@
         },
         // 第二步注册组件，格式为key:value 当key和value的名字一样是，可以简写为一个
         components: {
-          school,
+          school1:school,
           student
         },
       });

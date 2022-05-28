@@ -17,7 +17,9 @@
             第二种写法(首字母大写)：School
 
           多个个单词组成：
-            第一种写法(kebab-case命名）：my-school
+            第一种写法(kebab-case命名）：my-school, 
+              例如组件名是mySchool,使用标签时就是<my-school></my-school>
+
             第二种写法(Camelcase命名）：MySchool（需要vue脚手架支持）
         备注：
         （1）、组件名尽可能回避HTML中已有的元素名称，例如：h2、H2都不行。
@@ -30,21 +32,39 @@
           备注：不用使用脚手架时，<school/>会导致后续组件不能渲染。
 
         3. 一个简写方式：
-          const school = vue .extend (dptions）可简写为：
+          const school = vue .extend (options）可简写为：
           const school = options
        -->
     <div id="root">
-        
+      <h1>{{msg}}</h1>
+      <my-school></my-school>
     </div>
 
     <script>
       Vue.config.productionTip = false; // 关掉生产提示
 
+      const s = Vue.extend({
+        name:'school',
+        template:`
+          <h1>学校名称:{{name}}</h1>
+        `,
+        data(){
+          return {
+            name:'尚硅谷',
+          }
+        }
+      });
+      
+
       new Vue({
         el: "#root",
         data: {
-          
+          msg:'欢迎来到Vue'
+        },
+        components: {
+          mySchool:s,
         }
+
       });
     </script>
   </body>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>组件的嵌套</title>
     <script src="../js/vue.js"></script>
     <script src="../js/dayjs.min.js"></script>
   </head>
@@ -13,16 +13,76 @@
        
        -->
     <div id="root">
-        
+      
+      
     </div>
 
     <script>
       Vue.config.productionTip = false; // 关掉生产提示
 
+      const student = Vue.extend({
+        name:'student',
+        template:`
+        <div>
+          <h1>学生姓名:{{sutdentName}}</h1>
+        </div>
+        `,
+        data(){
+          return {
+            sutdentName:'张三',
+          }
+        }
+      });
+
+      const school = Vue.extend({
+        template:`
+          <div>
+            <h1>学校名称:{{name}}</h1>
+            <student></student>
+          </div>
+        `,
+        data(){
+          return {
+            name:'尚硅谷',
+          }
+        },
+        components:{
+          student,
+        }
+      });
+      
+      const hello = Vue.extend({
+        name:'hello',
+        template:`
+        <div>
+          <h1>{{msg}}</h1>
+        </div>
+        `,
+        data(){
+          return {
+            msg:'欢迎来到Vue',
+          }
+        }
+      });
+
+      const app = Vue.extend({
+        name:'app',
+        template:`
+          <div>
+            <hello></hello>
+            <school></school>
+          </div>
+        `,
+        components:{
+          school,
+          hello,
+        }
+      });
       new Vue({
+        template:'<app></app>',
         el: "#root",
-        data: {
-          
+        components: {
+          app,
         }
       });
     </script>

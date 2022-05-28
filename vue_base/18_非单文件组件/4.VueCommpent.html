@@ -34,11 +34,49 @@
     <script>
       Vue.config.productionTip = false; // 关掉生产提示
 
+      const school = Vue.extend({
+        template:`
+          <div>
+            <h1>学校名称:{{name}}</h1>
+          </div>
+        `,
+        data(){
+          return {
+            name:'尚硅谷',
+          }
+        }
+      });
+      
+      const hello = Vue.extend({
+        name:'hello',
+        template:`
+        <div>
+          <h1>{{msg}}</h1>
+        </div>
+        `,
+        data(){
+          return {
+            msg:'欢迎来到Vue',
+          }
+        }
+      });
+
+      console.log('@',school);
+      console.log('#',hello);
+      console.log('@@',hello===school);
+
+      school.a = 99;
+      console.log('@',school.a);
+      console.log('@',hello.a);
+
+
       new Vue({
         el: "#root",
-        data: {
-          
-        }
+        data() {
+          return {
+            
+          }
+        },
       });
     </script>
   </body>
