@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        *{
+            margin-top: 10px;
+        }
+        .demo1{
+            height: 50px;
+            background-color: skyblue;
+        }
+        .div1{
+            background-color: skyblue;
+        }
+        .div2{
+            margin: 5px;
+            background-color: coral;
+        }
+        .list{
+            height: 200px;
+            width: 200px;
+            background-color: aqua;
+            overflow: auto;
+        }
+        li{
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        vue中的事件修饰符：
+            1.prevent：阻止默认事件（常用）；
+            2.stop：阻止事件冒泡（常用）；
+            3.once：事件只触发一次（常用）；
+            4.capture：使用事件的捕获模式；
+            5.se1f：只有event.target是当前操作的元素时才触发事件
+            6.passive：事件的默认行为立即执行，无需等待事件回调执行完，
+     -->
+    <div id="root"> 
+        <h1>Welcome!{{name}}</h1>
+        <!-- 阻止默认事件（常用） 等同于在调用方法中使用 event.preventDefault()-->
+        <a href="http://www.baidu.com" @click.prevent="showInfo">点我提示信息</a>
+
+        <!-- 
+            阻止事件冒泡（常用） 所谓事件冒泡就是事件嵌套之后层层响应 
+            如下用例中，点击按钮后会弹框提示两次，因为都触发click事件了，这就是所谓的事件冒泡
+            stop可以阻止事件冒泡；在哪里加，就在哪一层停止，
+            如本例，加在button上， 就只会在button上触发一次click事件；
+            加在外层的div上则还是会弹框提示两次
+        -->
+        <div class="demo1" @click="showInfo">
+            <button @click.stop="showInfo">点我提示信息</button>
+            <!-- 事件修饰符可以连着使用 -->
+            <!-- <a href="http://www.baidu.com" @click.stop.prevent="showInfo">点我提示信息</a> -->
+        </div>
+
+        <!-- 
+            事件只触发一次 （常用）
+            如果不使用once，则该按钮可以反复点击并调用点击事件，
+            加上once后，就只会调用一次点击事件，后面反复点击也不会再调用点击事件
+        -->
+        <button @click.once="showInfo">点我提示信息</button>
+
+        <!-- 
+            事件的捕获模式  capture 先捕获再冒泡
+            如本例中，加了capture则在控制台先输出1再输出2
+            不加，则是正常的事件冒泡，先输出1再输出2
+        -->
+        <div class="div1" @click.capture="showMsg(1)">
+            div1
+            <div class="div2" @click="showMsg(2)">
+                div2
+            </div>
+        </div>
+
+        <!-- 只有event.target是当前操作的元素是才触发事件 -->
+        <div class="demo1" @click.self="showInfo">
+            <button @click.stop="showInfo">点我提示信息</button>
+        </div>
+
+        <!-- 
+            passive：事件的默认行为立即执行，无需等待事件回调执行完，
+
+            wheel 鼠标滚轮滚动事件
+            scroll 鼠标滚轮滚动事件 及 方向键上下移动
+
+            本例中，滚动调用事件会循环100000次输出，在事件不执行完，滚动栏不会下滑。
+            加上passive则会继续滑动，滑动事件也会继续执行
+
+            passive使用情况较少，并且能优化的有限，本例中如果使用scroll就自带该效果
+         -->
+         <ul class="list" @wheel.passive="demo">
+             <li>1</li>
+             <li>2</li>
+             <li>3</li>
+             <li>4</li>
+         </ul>
+    </div>
+    
+
+    <script>
+        Vue.config.productionTip = false; // 关掉生产提示
+
+        new Vue({
+            el:"#root",
+            data:{
+                 name:"cheng"   
+            },
+            methods: {
+                showInfo(event){
+                    // event.preventDefault(); // 阻止默认事件的默认调用
+                    // event.stopPropagation(); // 阻止事件冒泡
+                    alert("同学你好！");
+                    // console.log(event.target);
+                },
+                showMsg(msg){
+                    console.log(msg);
+                },
+                demo(){
+                    for (let i = 0; i < 100000; i++) {
+                        console.log("@");
+                    }
+                    console.log("累坏了");
+                }
+            }
+        })
+    </script>
+</body>
+</html>

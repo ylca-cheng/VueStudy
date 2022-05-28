@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 
+       
+     -->
+    <div id="root"> 
+        <h1>今天天气很{{info}}</h1> 
+       <button @click="changeWeather">切换天气</button>
+       <!-- 方法很简单可以这样写，方法体多了就不推荐了  -->
+       <!-- <button @click="isHot = !isHot">切换天气</button> -->
+
+       <!-- 不能这样写，因为alert是window对象的方法，除非在data里绑定window对象，然后使用window.alert(1) -->
+       <!-- 错误写法 -->
+       <!-- <button @click="alert(1)">切换天气</button> -->
+       <!-- 使用的前提是window对象绑定到data中 -->
+       <!-- <button @click="window.alert(1)">切换天气</button> -->
+
+    </div>
+    
+
+    <script>
+        Vue.config.productionTip = false; // 关掉生产提示
+
+        const vm = new Vue({
+            el:"#root",
+            data:{
+                 isHot:true ,
+                //  window
+            },
+            methods: {
+               changeWeather(){
+                   this.isHot = !this.isHot;
+               }
+            },
+            computed: {
+                info(){
+                    return this.isHot ? '炎热' : '凉爽';
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

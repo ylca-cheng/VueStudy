@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <script src="../js/dayjs.min.js"></script>
+   
+  </head>
+  <body>
+    <!-- 
+      
+     -->
+    <div id="root">
+      <h2>当前n的值是{{n}}</h2>
+      <button @click="add">点我n++</button>
+      <button @click="bye">点我销毁vm</button>
+    </div>
+
+
+    <script>
+      Vue.config.productionTip = false; // 关掉生产提示
+
+      new Vue({
+        el: "#root",
+        data: {
+          n:1
+        },
+        methods: {
+            add(){
+              this.n++;
+            },
+            bye(){
+              this.$destroy();
+            }
+        },
+        // 此时数据代理还未开始
+        beforeCreate() {
+          console.log('beforeCreate');
+        },
+        created() {
+          console.log('created');
+        },
+        beforeMount() {
+          console.log('beforeMount');
+        },
+        // Vue完成模板解析后并把真实DOM元素放入页面后（完成挂载）调用mounted
+        mounted() {
+          console.log('mounted');
+        },
+        beforeUpdate() {
+          console.log('beforeUpdate');
+        },
+        updated() {
+          console.log('updated');
+        },
+        beforeDestroy() {
+          console.log('beforeDestroy');
+        },
+        destroyed() {
+          console.log('destroyed');
+        },
+      });
+    
+      
+    </script>
+  </body>
+</html>

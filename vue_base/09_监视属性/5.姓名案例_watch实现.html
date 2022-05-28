@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+      computed和lwatch之间的区别：
+        1.computed能完成的功能，watch都可以完成。
+        2.watch能完成的功能，computed不一定能完成，例如：watch可以进行异步操作。
+      两个重要的小原则：
+        1. 所被vue管理的函数，最好写成普通两数，这样this的指向才是vm 或 组件实例对象。
+        2. 所有不被vue所管理的西数（定时器的回调两数、ajax的回调函数等），最好写成箭头函数，
+        这样this的指向才是vm 或 组件实例对象。
+     -->
+    <div id="root">
+      姓：<input type="text" v-model="firstName" /> <br />
+      <br />
+      名：<input type="text" v-model="lastName" /> <br />
+      <br />
+      全名：<span>{{fullName}}</span>
+    </div>
+
+    <script>
+      Vue.config.productionTip = false; // 关掉生产提示
+
+      const vm = new Vue({
+        el: "#root",
+        data: {
+          firstName: "张",
+          lastName: "三",
+          fullName:"张-三"
+        },
+        watch:{
+          firstName(newVlaue){
+            // 特别注意这里是箭头函数，this才是vm实例对象
+            // 这是因为箭头函数不绑定this，需要去外层找，自然就找到了vm的实例对象
+            // 之所以vm自己的方法不写成箭头函数也是这个原因，不绑定this，去外层找，就自然找到的是window对象
+            setTimeout(() => {
+              console.log(this);
+              this.fullName = newVlaue + '-' + this.lastName;
+            }, 1000);  
+          },
+          lastName(newVlue){
+            // 这里的this是window实例对象
+            // 因为setTimeout是window实例的方法，this自然就是window对象
+            setTimeout(function(){
+              console.log(this);
+              this.fullName = this.firstName + '-' + newVlue;
+            },1000);
+            
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

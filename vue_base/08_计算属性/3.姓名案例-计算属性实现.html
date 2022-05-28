@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 
+        计算属性：
+            1.定义：要用的属性不存在，要通过己有属性计算得来。
+            2.原理：底层借助了objcet.defineproperty方法提供的getter和setter。
+            3.get两数什么时候执行？
+                (1）初次读取时会执行一次。
+                (2）当依赖的数据发生改变时会被再次调用。
+            4.优势：
+                与methods实现相比，内部有缓存机制（复用），效率更高，调试方便。
+            5. 备注：
+                1.计算属性最终会出现在vm上，直接读取使用即可。
+                2. 如果计算属性要被修改，那必须写set两数去响应修改，且set中要引起计算时依赖的数据发生改变
+     -->
+    <div id="root"> 
+        <!-- 
+            只要绑定数据发生变化，模板就会重新加载，fullname也就会被重新调用 
+            与通过方法调用不同的是，计算属性是带缓存的，以下例子中就就只会调用一次，可以通过控制台输出验证
+            带缓存也是计算属性的优势
+        -->
+        姓：<input type="text" v-model="firstName"> <br> <br>
+        名：<input type="text" v-model="lastName"> <br> <br>
+        全名：<span>{{fullName}}</span> <br> <br>
+        全名：<span>{{fullName}}</span> <br> <br>
+        全名：<span>{{fullName}}</span> <br> <br>
+        全名：<span>{{fullName}}</span> <br> <br>
+        全名：<span>{{fullName}}</span>
+    </div>
+    
+
+    <script>
+        Vue.config.productionTip = false; // 关掉生产提示
+
+        const vm = new Vue({
+            el:"#root",
+            data:{
+                 firstName:"张" ,
+                 lastName:"三"  
+            },
+            // 与data和methods不同的是，data和methods中的属性和方法，最终都会绑定到vm实例上
+            // 而computed就仅仅只是绑定属性到vm实例上，
+            // 不能理解为computed下的fullName是个对象，绑定到vm上的就是个对象，这是错误的理解
+            // 所谓的计算属性，最终都是调用计算属性的getter方法而已
+            computed: {
+                fullName:{
+                    // get有什么作用，当有人调用fullName的时候就会调用get，且返回值作为fullName的值
+                    // get什么时候被调用？1、初次读取fullName的时候。2、所依赖的数据发生变化的时候
+                    get(){
+                        console.log("@","fullName");
+                         return this.firstName+'-'+this.lastName;
+                    },
+                    // 当fullName被修改时，set方法被调用
+                    set(value){
+                        const arr = value.split("-");
+                        this.firstName = arr[0];
+                        this.lastName = arr[1];
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

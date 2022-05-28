@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+       
+     -->
+    <div id="root">
+      <h1>学校名称：{{name}}</h1>
+      <h1>学校地址：{{address}}</h1>
+      <hr>
+      <h1>学生名称：{{student.name}}</h1>
+      <button @click="addSex">添加一个性别</button>
+      <h1 v-if="student.sex">学生性别：{{student.sex}}</h1>
+      <h1>学生年龄：真实年龄：{{student.age.relAge}},对外年龄:{{student.age.sayAge}}</h1>
+      <h1>朋友们</h1>
+      <ul>
+        <li v-for="(item, index) in student.friends" :key="index">
+            {{item}}
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      Vue.config.productionTip = false; // 关掉生产提示
+ 
+      // 使用计算属性的方式实现
+      const vm = new Vue({
+        el: "#root",
+        data: {
+          name:"尚硅谷",
+          address:"北京",
+          student:{
+            name:"张三",
+            age:{
+              relAge:55,
+              sayAge:18
+            },
+            friends:["张三","李四"]
+          }
+        },
+        methods: {
+          addSex(){
+            // 两种都行 注意对象不能是 Vue 实例，或者 Vue 实例的根数据对象,例如Vue.set(this,'sex','男');这是不行的
+            
+            // Vue.set(this.student,'sex','男');
+            this.$set(this.student, 'sex', '男');
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        *{
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        1.vue中常用的按键别名：
+            回车 =>enter
+            删除 =>delete（捕获“删除”和“退格”键）
+            退出 => esC
+            窄格 => space
+            换行 => tab(特殊，必须配合keydown使用，因为tab本身就具有切换焦点的功能，按下tab后，焦点切换了，自然不会再触发keyup了)
+            上 => up
+            下 => down
+            左 => left
+            右 => right
+
+        2.vue未提供別名的按键，可以使用按键原始的key值去鄉定，但注意要转为kebab-case（短横线命名）
+            例如使用大小写转换键 CapsLock:  @keyup.caps-lock
+         
+        3.系统修饰键（用法特殊)：ctrl、 alt、shift、meta（windows的开始键，mac的command键）
+            (1）。配合keyup使用：按下修饰键的同时，再按下其他键，随后释放其他键，事件才被触发。
+            (2). 配合keydown使用：正常触发事件
+
+        4.也可以使用keyCode去指定具体的按键（不推荐）
+
+        5.Vue.config.keyCodes.自定义键名 = 健码，可以去定制按键别名
+     -->
+    <div id="root"> 
+        <h1>Welcome!{{name}}</h1>
+        <input type="text" placeholder="按下回车提示输入" @keyup.enter="showInfo">
+        <br>
+        <!-- 使用vue未提供别名的按键 -->
+        <input type="text" placeholder="按下大小写转换键提示输入" @keyup.caps-lock="showInfo">
+
+        <br>
+        <!-- 使用系统修饰键 -->
+        <input type="text" placeholder="按下ctrl+其他键提示输入" @keyup.ctrl="showInfo">
+        <!-- 系统修饰键的特殊性也可以使用以下方式解决 -->
+        <input type="text" placeholder="按下ctrl+Y提示输入" @keyup.ctrl.y="showInfo">
+
+        <br>
+        <!-- 使用keyCode去指定具体的按键 -->
+        <input type="text" placeholder="按下回车提示输入" @keyup.13="showInfo">
+
+        <br>
+        <!-- 使用自定义键名 -->
+        <input type="text" placeholder="按下回车提示输入" @keyup.huiche="showInfo">
+    </div>
+    
+
+    <script>
+        Vue.config.productionTip = false; // 关掉生产提示
+        // 自定义键名
+        Vue.config.keyCodes = {
+            "huiche": 13,
+        };
+
+        new Vue({
+            el:"#root",
+            data:{
+                 name:"cheng"   
+            },
+            methods: {
+                showInfo(e){
+                    // console.log(e.key,e.keyCode); // e.keyCode 表示按键的值，enter的keyCode等于13
+                    // if(e.keyCode == 13){
+                    //     console.log(e.target.value);
+                    // }
+                    console.log(e.target.value);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

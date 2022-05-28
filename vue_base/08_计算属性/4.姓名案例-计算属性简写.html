@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      姓：<input type="text" v-model="firstName" /> <br />
+      <br />
+      名：<input type="text" v-model="lastName" /> <br />
+      <br />
+      全名：<span>{{fullName}}</span>
+    </div>
+
+    <script>
+      Vue.config.productionTip = false; // 关掉生产提示
+
+      const vm = new Vue({
+        el: "#root",
+        data: {
+          firstName: "张",
+          lastName: "三",
+        },
+        computed: {
+          // 完整写法
+          /* fullName:{
+                    get(){
+                        console.log("@","fullName");
+                         return this.firstName+'-'+this.lastName;
+                    },
+                    // 当fullName被修改时，set方法被调用
+                    set(value){
+                        const arr = value.split("-");
+                        this.firstName = arr[0];
+                        this.lastName = arr[1];
+                    }
+                } */
+          // 简写
+          // 只考虑读取，不考虑修改才能使用简写模式
+          // 计算属性不支持异步的方式
+          fullName() {
+            console.log("@", "fullName");
+            // setTimeout(() => {
+            //   return this.firstName + "-" + this.lastName;
+            // }, 1000);
+            return this.firstName + "-" + this.lastName;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
